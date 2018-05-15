@@ -34,6 +34,3 @@ $ docker-compose exec php-72-fpm sh
     * `[+]`, `PHPUnit by Remote...`
     * Path to script: `/opt/project/project/vendor/autoload.php`
     * Default configuration file: `/opt/project/project/phpunit.xml`
-
-## Credits
-* [T1k3](https://github.com/t1k3hu)
