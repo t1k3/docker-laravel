@@ -3,6 +3,7 @@
 ## Usage
 * Remove `/project` from `.gitignore`
 * Setup `DB_HOST=mysql` in `.env`
+* Setup (or delete) `DB_PASSWORD=<password>` in `.env` from `docker-compose.yml #mysql:MYSQL_PASSWORD`
  
 ```bash
 $ docker-compose -p <projectname> up -d
