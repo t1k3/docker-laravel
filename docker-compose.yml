@@ -26,6 +26,9 @@ services:
       - ./project:/var/www/html
     environment:
       - DB_HOST=mysql
+      - DB_DATABASE=homestead
+      - DB_USERNAME=homestead
+      - DB_PASSWORD=QLcnbtchbhV2pi2ZY0IY
     links:
       - mysql
     depends_on:
@@ -42,9 +45,9 @@ services:
       - ./logs/mysql:/var/log/mysql
     environment:
       - MYSQL_DATABASE=homestead
-      - MYSQL_ROOT_PASSWORD=rootsecret
+      - MYSQL_ROOT_PASSWORD=dQDDEm4eSSuCZmiOcYmF
       - MYSQL_USER=homestead
-      - MYSQL_PASSWORD=secret
+      - MYSQL_PASSWORD=QLcnbtchbhV2pi2ZY0IY
     networks:
       - laravel-docker-network
 
