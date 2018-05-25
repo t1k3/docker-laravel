@@ -24,6 +24,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./project:/var/www/html
+      - ./dockerfiles/php/php.ini:/usr/local/etc/php/conf.d/php.ini
     environment:
       - DB_HOST=mysql
       - DB_DATABASE=homestead
