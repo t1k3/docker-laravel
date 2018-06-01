@@ -8,11 +8,11 @@
 ```bash
 $ docker-compose -p <projectname> up -d
 
-$ docker-compose run --rm composer create-project --prefer-dist laravel/laravel ./
+$ docker-compose -p <projectname> run --rm composer create-project --prefer-dist laravel/laravel ./
 
-$ docker-compose run --rm composer install
-$ docker-compose run --rm artisan migrate
-$ docker-compose run --rm npm install
+$ docker-compose -p <projectname> run --rm composer install
+$ docker-compose -p <projectname> run --rm npm install
+$ docker-compose -p <projectname> exec -T php-72-fpm php artisan key:generate
 
 $ docker-compose exec php-72-fpm sh
 ```
