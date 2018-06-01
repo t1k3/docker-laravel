@@ -14,7 +14,7 @@ $ docker-compose -p <projectname> run --rm composer install
 $ docker-compose -p <projectname> run --rm npm install
 $ docker-compose -p <projectname> exec -T php-72-fpm php artisan key:generate
 
-$ docker-compose exec php-72-fpm sh
+$ docker-compose -p <projectname> exec php-72-fpm sh
 ```
 
 # Check URL in browser
