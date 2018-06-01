@@ -52,20 +52,6 @@ services:
     networks:
       - laravel-docker-network
 
-
-  artisan:
-    build: ./dockerfiles/artisan/.
-    working_dir: /var/www/html
-    entrypoint: ['php', 'artisan']
-    volumes:
-      - ./project:/var/www/html
-    links:
-      - mysql
-    depends_on:
-      - mysql
-    networks:
-      - laravel-docker-network
-
   composer:
     image: composer
     working_dir: /var/www/html
