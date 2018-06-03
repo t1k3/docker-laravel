@@ -7,8 +7,11 @@
  
 ```bash
 $ docker-compose -p <projectname> up -d
+$ docker-compose -p <projectname> exec php-72-fpm crond
+
 
 $ docker-compose -p <projectname> run --rm composer create-project --prefer-dist laravel/laravel ./
+
 
 $ docker-compose -p <projectname> run --rm composer install
 $ docker-compose -p <projectname> run --rm npm install
