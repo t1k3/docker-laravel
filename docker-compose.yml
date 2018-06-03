@@ -25,6 +25,7 @@ services:
     volumes:
       - ./project:/var/www/html
       - ./dockerfiles/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./logs/cron:/var/log/cron/cron.log
     environment:
       - DB_HOST=mysql
       - DB_DATABASE=homestead
