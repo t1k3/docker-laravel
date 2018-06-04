@@ -13,6 +13,6 @@ RUN apk add dcron \
     && touch /var/log/cron/cron.log \
     && chmod -R 0644 /etc/cron.d/laravel \
     && /usr/bin/crontab /etc/cron.d/laravel \
-    && crond
+    && crond service restart
 
 #RUN chown www-data:www-data -R /var/www/html
