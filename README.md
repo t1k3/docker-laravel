@@ -7,6 +7,7 @@
  
 ```bash
 $ docker-compose -p <projectname> up -d
+$ docker-compose -p exec -T php-72-fpm crond service restart
 
 $ docker-compose -p <projectname> run --rm composer create-project --prefer-dist laravel/laravel ./
 
@@ -22,6 +23,7 @@ $ docker-compose -p <projectname> exec php-72-fpm sh
 
 ### TODO
 * [ ] Fix `chmod`
+* [ ] Fix: how can remove `crond service restart` after `docker-compose up`
 
 ### How to set PhpStorm
 * Open settings: `File\Settings` <OR> `Ctrl` + `Alt` + `S`
