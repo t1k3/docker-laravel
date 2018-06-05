@@ -7,6 +7,10 @@ RUN apk add --update --no-cache --virtual .phpize-deps $PHPIZE_DEPS freetype-dev
     && docker-php-ext-install bcmath gd mbstring mysqli pdo pdo_mysql opcache tokenizer zip exif \
     && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
 
+# backup: mysqldump
+#RUN apk add mysql-client
+
+# schedule
 ADD crontab /etc/cron.d/laravel
 RUN apk add dcron \
     && mkdir -p /var/log/cron \
@@ -15,4 +19,8 @@ RUN apk add dcron \
     && /usr/bin/crontab /etc/cron.d/laravel \
     && crond service restart
 
-#RUN chown www-data:www-data -R /var/www/html
+# permission
+#RUN apk add acl \
+#    && mkdir -p /var/www/html/storage/app \
+#    && setfacl -d -m u::rxw,g::rx,o::rx /var/www/html/storage/app
+RUN chown -R www-data:www-data /var/www/html
