@@ -23,7 +23,7 @@ RUN apk add --no-cache mysql-client
 # schedule
 ADD crontab /etc/cron.d/laravel
 RUN apk add --no-cache dcron \
-    && mkdir -p /var/log/cron \
+    && mkdir -p /var/log/cron/ \
     && touch /var/log/cron/cron.log \
     && chmod -R 0644 /etc/cron.d/laravel \
     && /usr/bin/crontab /etc/cron.d/laravel
@@ -34,6 +34,6 @@ RUN chown -R root:www-data /var/www/html \
 
 # supervisor
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN mkdir -p /var/log/supervisor \
+RUN mkdir -p /var/log/supervisor/ \
     && apk add --no-cache supervisor
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/conf.d/supervisord.conf"]
