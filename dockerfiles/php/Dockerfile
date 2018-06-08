@@ -13,8 +13,7 @@ RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS freetype-dev libpng-d
 
 # timezone
 RUN apk add tzdata \
-    && cp /usr/share/zoneinfo/Europe/Brussels /etc/localtime \
-    && echo "Europe/Brussels" > /etc/timezone \
+    && cp /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
     && apk del tzdata
 
 # backup: mysqldump
