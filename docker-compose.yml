@@ -1,83 +1,91 @@
-version: '3.1'
+version: '3.3'
 
 services:
   nginx:
-    image: nginx
-    working_dir: /var/www/html
-    ports:
-      - 8080:80
-      - 8443:443
+    build: ./dockerfiles/nginx/.
+    env_file:
+      - .env
     volumes:
-      - ./project:/var/www/html
-      - ./dockerfiles/nginx/vhost.conf:/etc/nginx/conf.d/default.conf
-      - log:/var/log/nginx
-    links:
-      - php-72-fpm
+      - "./src:/var/www/html"
+      - "log:/var/log"
+    ports:
+      - "${NGINX_PORT}:80"
     depends_on:
-      - php-72-fpm
-      - mysql
+      - php-fpm
+      - db
     restart: always
     networks:
-      - laravel-docker-network
+      - docker-laravel
 
-  php-72-fpm:
+  php-fpm:
     build: ./dockerfiles/php/.
-    working_dir: /var/www/html
     volumes:
-      - ./project:/var/www/html
-      - log:/var/log
+      - "./src:/var/www/html"
+      - "log:/var/log"
     environment:
-      - DB_HOST=mysql
-      - DB_DATABASE=homestead
-      - DB_USERNAME=homestead
-      - DB_PASSWORD=QLcnbtchbhV2pi2ZY0IY
-    links:
-      - mysql
+      DB_HOST: db
+      DB_DATABASE: homestead
+      DB_USERNAME: homestead
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+#      DB_PASSWORD_FILE: /run/secrets/db_password
+#    secrets:
+#      - db_password
     depends_on:
-      - mysql
+      - db
     restart: always
     networks:
-      - laravel-docker-network
+      - docker-laravel
 
-  mysql:
+  db:
     image: mysql
-    ports:
-      - 33061:3306
-    volumes:
-      - db-data:/var/lib/mysql
-      - log:/var/log/mysql
+    env_file:
+      - .env
     environment:
-      - MYSQL_DATABASE=homestead
-      - MYSQL_ROOT_PASSWORD=dQDDEm4eSSuCZmiOcYmF
-      - MYSQL_USER=homestead
-      - MYSQL_PASSWORD=QLcnbtchbhV2pi2ZY0IY
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+#      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+#      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+#    secrets:
+#      - db_root_password
+#      - db_password
+    volumes:
+      - "db_data:/var/lib/mysql"
+      - "log:/var/log/mysql"
+    ports:
+      - "${MYSQL_PORT}:3306"
     restart: always
     networks:
-      - laravel-docker-network
+      - docker-laravel
 
   composer:
     image: composer
-    working_dir: /var/www/html
-    entrypoint: composer
     volumes:
-      - ./project:/var/www/html
+      - "./src:/var/www/html"
     networks:
-      - laravel-docker-network
+      - docker-laravel
+    entrypoint: composer
 
   npm:
     build: ./dockerfiles/nodejs/.
-    working_dir: /var/www/html
-    entrypoint: npm
     volumes:
-      - ./project:/var/www/html
-      - log:/root/.npm/_logs/
+      - "./src:/var/www/html"
+      - "log:/root/.npm/_logs/"
     networks:
-      - laravel-docker-network
+      - docker-laravel
+    entrypoint: npm
+
+#secrets:
+#  db_password:
+#    file: db_password.txt
+#  db_root_password:
+#    file: db_root_password.txt
 
 volumes:
-  db-data:
+  db_data:
   log:
 
 networks:
-  laravel-docker-network:
+  docker-laravel:
     driver: 'bridge'

@@ -1,9 +1,11 @@
 FROM php:7.2-fpm-alpine
+WORKDIR /var/www/html
 
 ADD php.ini /usr/local/etc/php/conf.d/php.ini
 
 RUN apk update
 
+# laravel
 RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS freetype-dev libpng-dev libjpeg-turbo-dev freetype libpng libjpeg-turbo \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
@@ -16,23 +18,23 @@ RUN apk add tzdata \
     && cp /usr/share/zoneinfo/Europe/Budapest /etc/localtime \
     && apk del tzdata
 
-# backup: mysqldump
+# permission
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# backup: mysqldump from application
 RUN apk add --no-cache mysql-client
 
 # schedule
 ADD crontab /etc/cron.d/laravel
 RUN apk add --no-cache dcron \
-    && mkdir -p /var/log/cron/ \
+    && mkdir -p /var/log/cron \
     && touch /var/log/cron/cron.log \
     && chmod -R 0644 /etc/cron.d/laravel \
     && /usr/bin/crontab /etc/cron.d/laravel
 
-# permission
-RUN chown -R root:www-data /var/www/html \
-    && chmod -R 775 /var/www/html
-
 # supervisor
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN mkdir -p /var/log/supervisor/ \
+RUN mkdir -p /var/log/supervisor \
     && apk add --no-cache supervisor
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/conf.d/supervisord.conf"]
