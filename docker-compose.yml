@@ -27,9 +27,6 @@ services:
       DB_DATABASE: homestead
       DB_USERNAME: homestead
       DB_PASSWORD: ${MYSQL_PASSWORD}
-#      DB_PASSWORD_FILE: /run/secrets/db_password
-#    secrets:
-#      - db_password
     depends_on:
       - db
     restart: always
@@ -45,11 +42,6 @@ services:
       MYSQL_USER: homestead
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-#      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-#      MYSQL_PASSWORD_FILE: /run/secrets/db_password
-#    secrets:
-#      - db_root_password
-#      - db_password
     volumes:
       - "db_data:/var/lib/mysql"
       - "log:/var/log/mysql"
@@ -75,12 +67,6 @@ services:
     networks:
       - docker-laravel
     entrypoint: npm
-
-#secrets:
-#  db_password:
-#    file: db_password.txt
-#  db_root_password:
-#    file: db_root_password.txt
 
 volumes:
   db_data:
