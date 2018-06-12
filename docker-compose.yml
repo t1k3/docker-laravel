@@ -54,7 +54,7 @@ services:
   composer:
     image: composer
     volumes:
-      - ./src:/var/www/html
+      - ./src:/app
     networks:
       - docker-laravel
     entrypoint: composer

@@ -1,7 +1,7 @@
 FROM php:7.2-fpm-alpine
 WORKDIR /var/www/html
 
-ADD php.ini /usr/local/etc/php/conf.d/php.ini
+COPY php.ini /usr/local/etc/php/conf.d/php.ini
 
 RUN apk update
 
@@ -29,7 +29,7 @@ RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
 RUN apk add --no-cache mysql-client
 
 # schedule
-ADD crontab /etc/cron.d/laravel
+COPY crontab /etc/cron.d/laravel
 RUN apk add --no-cache dcron \
     && mkdir -p /var/log/cron \
     && touch /var/log/cron/cron.log \
@@ -37,7 +37,7 @@ RUN apk add --no-cache dcron \
     && /usr/bin/crontab /etc/cron.d/laravel
 
 # supervisor
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN mkdir -p /var/log/supervisor \
     && apk add --no-cache supervisor
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/conf.d/supervisord.conf"]
