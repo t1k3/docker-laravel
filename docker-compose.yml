@@ -65,7 +65,7 @@ services:
     build: ./dockerfiles/nodejs/.
     volumes:
       - ./src:/var/www/html
-      - log:/root/.npm/_logs
+      - ./log/npm:/root/.npm/_logs
     networks:
       - docker-laravel
     entrypoint: npm
