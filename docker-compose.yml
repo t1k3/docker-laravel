@@ -7,7 +7,7 @@ services:
       - .env
     volumes:
       - ./src:/var/www/html
-      - log:/var/log/nginx
+      - ./log/nginx:/var/log/nginx
     ports:
       - ${NGINX_PORT}:80
     depends_on:
@@ -21,7 +21,9 @@ services:
     build: ./dockerfiles/php/.
     volumes:
       - ./src:/var/www/html
-      - log:/var/log
+      - ./log/cron:/var/log/cron
+      - ./log/supervisor:/var/log/supervisor
+      - ./log/laravel:/var/www/html/storage/logs
     environment:
       DB_HOST: db
       DB_DATABASE: homestead
@@ -43,8 +45,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - db_data:/var/lib/mysql
-      - log:/var/log/mysql
+      - ./db_data:/var/lib/mysql
+      - ./log/mysql:/var/log/mysql
     ports:
       - ${MYSQL_PORT}:3306
     restart: always
@@ -67,10 +69,6 @@ services:
     networks:
       - docker-laravel
     entrypoint: npm
-
-volumes:
-  db_data:
-  log:
 
 networks:
   docker-laravel:
