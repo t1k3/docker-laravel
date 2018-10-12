@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.4'
 
 services:
   nginx:
@@ -14,8 +14,6 @@ services:
       - php-fpm
       - db
     restart: always
-    networks:
-      - docker-laravel
 
   php-fpm:
     build: ./dockerfiles/php/.
@@ -32,8 +30,6 @@ services:
     depends_on:
       - db
     restart: always
-    networks:
-      - docker-laravel
 
   db:
     image: mysql
@@ -44,21 +40,24 @@ services:
       MYSQL_USER: homestead
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    entrypoint: ['/entrypoint.sh', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
+    healthcheck:
+      test: "/usr/bin/mysql --user=homestead --password=${MYSQL_PASSWORD} --execute \"SHOW DATABASES;\""
+      interval: 3s
+      timeout: 2s
+      retries: 5
     volumes:
       - ./db_data:/var/lib/mysql
       - ./log/mysql:/var/log/mysql
     ports:
       - ${MYSQL_PORT}:3306
     restart: always
-    networks:
-      - docker-laravel
 
   composer:
     image: composer
     volumes:
       - ./src:/app
-    networks:
-      - docker-laravel
     entrypoint: composer
 
   npm:
@@ -66,10 +65,4 @@ services:
     volumes:
       - ./src:/var/www/html
       - ./log/npm:/root/.npm/_logs
-    networks:
-      - docker-laravel
     entrypoint: npm
-
-networks:
-  docker-laravel:
-    driver: 'bridge'
