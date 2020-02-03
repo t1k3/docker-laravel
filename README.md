@@ -7,15 +7,15 @@
 
 ```bash
 $ cp .env.example .env
-$ docker-compose -p <projectname> up -d
+$ docker-compose up -d
 
-$ docker-compose -p <projectname> run --rm composer create-project --prefer-dist laravel/laravel ./
+$ docker-compose run --rm composer create-project --prefer-dist laravel/laravel ./
 
-$ docker-compose -p <projectname> run --rm composer install
-$ docker-compose -p <projectname> run --rm npm install
-$ docker-compose -p <projectname> exec -T php-fpm php artisan key:generate
+$ docker-compose run --rm composer install
+$ docker-compose run --rm npm install
+$ docker-compose exec -T php-fpm php artisan key:generate
 
-$ docker-compose -p <projectname> exec php-fpm sh
+$ docker-compose exec php-fpm sh
 ```
 
 # Check URL in browser
@@ -25,3 +25,4 @@ $ docker-compose -p <projectname> exec php-fpm sh
 * [ ] Add [queues](https://laravel.com/docs/5.6/queues)
 * [ ] Fix docker-host permission: [userns-remap](https://docs.docker.com/engine/security/userns-remap/)
 * [ ] Update project with swarm: secrets, configs
+* [ ] Supervisor
