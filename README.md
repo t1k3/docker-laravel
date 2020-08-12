@@ -23,6 +23,7 @@ $ docker-compose exec php-fpm sh
 
 ### TODO
 * [ ] Add [queues](https://laravel.com/docs/5.6/queues)
-* [ ] Fix docker-host permission: [userns-remap](https://docs.docker.com/engine/security/userns-remap/)
 * [ ] Update project with swarm: secrets, configs
-* [ ] Supervisor
+* [ ] Supervisor: [The Twelve Factors](https://12factor.net/)
+* [ ] [Docker Hostmanager](https://github.com/iamluc/docker-hostmanager)
+* [ ] Makefile
