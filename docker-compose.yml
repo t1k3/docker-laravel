@@ -56,12 +56,15 @@ services:
 
   composer:
     image: composer
+    user: 1000:1000
     volumes:
       - ./src:/app
 
   npm:
     build: ./dockerfiles/nodejs/.
+    user: 1000:1000
+    working_dir: /app
     volumes:
-      - ./src:/var/www/html
+      - ./src:/app
       - ./log/npm:/root/.npm/_logs
     entrypoint: npm
