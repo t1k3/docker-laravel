@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.8"
 
 services:
   nginx:
@@ -12,8 +12,8 @@ services:
       - ${NGINX_PORT}:80
     depends_on:
       - php-fpm
-      - db
-    restart: always
+      - database
+    restart: unless-stopped
 
   php-fpm:
     build: ./dockerfiles/php/.
@@ -23,27 +23,27 @@ services:
       - ./log/supervisor:/var/log/supervisor
       - ./log/laravel:/var/www/html/storage/logs
     environment:
-      DB_HOST: db
-      DB_DATABASE: homestead
-      DB_USERNAME: homestead
+      DB_HOST: database
+      DB_DATABASE: laravel
+      DB_USERNAME: laravel
       DB_PASSWORD: ${MYSQL_PASSWORD}
     depends_on:
-      - db
-    restart: always
+      - database
+    restart: unless-stopped
 
-  db:
+  database:
     image: mysql
     env_file:
       - .env
     environment:
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     command: ["--default-authentication-plugin=mysql_native_password"]
-    entrypoint: ['/entrypoint.sh', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
+    entrypoint: ["/entrypoint.sh", "--character-set-server=utf8", "--collation-server=utf8_general_ci"]
     healthcheck:
-      test: "/usr/bin/mysql --user=homestead --password=${MYSQL_PASSWORD} --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --execute \"SHOW DATABASES;\""
       interval: 3s
       timeout: 2s
       retries: 5
@@ -52,13 +52,12 @@ services:
       - ./log/mysql:/var/log/mysql
     ports:
       - ${MYSQL_PORT}:3306
-    restart: always
+    restart: unless-stopped
 
   composer:
     image: composer
     volumes:
       - ./src:/app
-    entrypoint: composer
 
   npm:
     build: ./dockerfiles/nodejs/.
