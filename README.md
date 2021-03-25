@@ -22,8 +22,13 @@ $ docker-compose exec php-fpm sh
 * [http://localhost:8001](http://localhost:8001)
 
 ### TODO
-* [ ] Add [queues](https://laravel.com/docs/5.6/queues)
-* [ ] Update project with swarm: secrets, configs
-* [ ] Supervisor: [The Twelve Factors](https://12factor.net/)
-* [ ] [Docker Hostmanager](https://github.com/iamluc/docker-hostmanager)
-* [ ] Makefile
+* [ ] Add swarm configuration: docker-stack.yml
+* [ ] Remove supervisor: [The Twelve Factors](https://12factor.net/)
+  * [ ] Cron Service
+  * [ ] Migration Service
+  * [ ] [Queue worker](https://laravel.com/docs/8.x/queues)
+* [ ] Separate (named) volumes
+* [ ] Separate .env files
+* [ ] Add [Traefik](https://doc.traefik.io/traefik/) labels
+* [ ] Add [multistage dockerfile](https://docs.docker.com/develop/develop-images/multistage-build/)
+* [ ] Makefile / Ansible
